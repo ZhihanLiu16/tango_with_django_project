@@ -16,6 +16,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def index(request):
+    request.session.set_test_cookie()
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
 
@@ -27,6 +28,9 @@ def index(request):
     return render(request, 'rango/index.html', context=context_dict)
 
 def about(request):
+    if request.session.test_cookie_worked():
+        print("TEST COOKIE WORKED!")
+        request.session.delete_test_cookie()
     context_dict = {'boldmessage': 'Zhihan.Liu'}
     print(request.method)
     print(request.user)
